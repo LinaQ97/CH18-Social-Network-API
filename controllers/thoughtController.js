@@ -17,7 +17,7 @@ module.exports = {
         return res.status(404).json({ message: 'No thought with that ID' });
       }
 
-      res.json(thought);
+      res.json(Thought);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -72,7 +72,7 @@ module.exports = {
 
       const user = await User.findOneAndUpdate(
         { thoughts: req.params.thoughtId },
-        { $pull: { thoughts: req.params.thoughtId } },
+        { $pull: { Thoughts: req.params.thoughtId } },
         { new: true }
       );
 
@@ -88,11 +88,11 @@ module.exports = {
     }
   },
   // Add a video response
-  async addThoughtResponse(req, res) {
+  async addReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { responses: req.body } },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
 
@@ -106,11 +106,11 @@ module.exports = {
     }
   },
   // Remove video response
-  async removeThoughtResponse(req, res) {
+  async removeReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: { responseId: req.params.responseId } } },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
       )
 

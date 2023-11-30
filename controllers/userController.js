@@ -52,6 +52,7 @@ module.exports = {
     }
   },
   async deleteUser(req, res) {
+    try {
     const thought = await Thought.findOneAndRemove({ username: req.body.username });
 
       if (!thought) {
@@ -70,9 +71,10 @@ module.exports = {
       }
 
       res.json({ message: 'Thought successfully deleted!' });
-    } ,catch (err) {
+    } catch (err) {
       res.status(500).json(err);
-    },
+  }
+},
   async addFriend(req, res) {
     try{
     const user = await User.findOneAndUpdate(
@@ -86,7 +88,7 @@ module.exports = {
         message: 'Friend added, but found no user with that ID',
       });
     }
-      res.json('Created the video 🎉');
+      res.json('Created the friend 🎉');
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -96,7 +98,7 @@ module.exports = {
     try {
         const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friends: req.params.friendsId } },
+        { $pull: { friends: req.params.friendId } },
         { new: true }
       );
 
